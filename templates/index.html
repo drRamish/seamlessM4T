@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <title>Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f7fb;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            color: #fff;
+            padding-top: 5px;
+            text-align: center;
+        }
+        .border {
+            margin-top: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .loader-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<body class="bg-light">
+    <div class="header">
+        <h7 class="text-muted">Speech to Speech Translator</h7>
+    </div>
+    <div class="container bg-light">
+
+        <!-- <div class="form-control form-control-sm bg-light text-muted" >
+            <p>Task</p>
+            <select class="form-control form-select-sm" id="task" enabled>
+                <option value="s2st">Speech to Speech</option>
+                <option value="t2tt">Text to Text</option>
+            </select>
+        </div> -->
+
+        <div class="form-control form-control-sm bg-light text-muted" style="margin-top: 5px;">
+            <p class="">Target Language</p>
+            <select class="form-control form-select-sm" id="targetLanguage" enabled>
+                <option value="English">English</option>
+                <option value="Modern Standard Arabic">Modern Standard Arabic</option>
+                <option value="Bengali">Bengali</option>
+                <option value="Catalan">Catalan</option>
+                <option value="Czech">Czech</option>
+                <option value="Mandarin Chinese">Mandarin Chinese</option>
+                <option value="Welsh">Welsh</option>
+                <option value="Danish">Danish</option>
+                <option value="German">German</option>
+                <option value="Estonian">Estonian</option>
+                <option value="Finnish">Finnish</option>
+                <option value="French">French</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Indonesian">Indonesian</option>
+                <option value="Italian">Italian</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Korean">Korean</option>
+                <option value="Maltese">Maltese</option>
+                <option value="Dutch">Dutch</option>
+                <option value="Western Persian">Western Persian</option>
+                <option value="Polish">Polish</option>
+                <option value="Portuguese">Portuguese</option>
+                <option value="Romanian">Romanian</option>
+                <option value="Russian">Russian</option>
+                <option value="Slovak">Slovak</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Swedish">Swedish</option>
+                <option value="Swahili">Swahili</option>
+                <option value="Telugu">Telugu</option>
+                <option value="Tagalog">Tagalog</option>
+                <option value="Thai">Thai</option>
+                <option value="Turkish">Turkish</option>
+                <option value="Ukrainian">Ukrainian</option>
+                <option value="Urdu">Urdu</option>
+                <option value="Northern Uzbek">Northern Uzbek</option>
+                <option value="Vietnamese">Vietnamese</option>
+            </select>
+        </div>
+        
+        <div class="form-control form-control-sm bg-light text-muted" style="margin-top: 5px;">
+            <p>Audio Source</p>
+            <input class="btn-check"  type="radio" id="selectFile" name="inputChoice" value="file" checked>
+            <label style="font-size:80%" class="btn btn-outline-dark" for="selectFile">Audio File</label>
+
+            <input class="btn-check"  type="radio" id="recordAudio" name="inputChoice" value="record">
+            <label style="font-size:80%" class="btn btn-outline-dark" for="recordAudio">Record File</label>
+
+            <div class="form-select-sm" style="margin-top: 10px;">
+                <input class="form-control form-select-sm"  type="file" id="fileInput" accept=".wav, .mp3">
+                <button style="font-size:80%" hidden="hidden" class="btn btn-danger w-25" id="recordButton" disabled>Record</button>
+                <button style="font-size:80%" hidden="hidden" class="btn btn-dark w-25" id="stopButton" disabled>Stop</button>
+            </div>
+        </div>
+       
+        <div class="form-control form-control-sm bg-light text-muted" style="margin-top: 10px;">
+            <button style="font-size:80%"  class="btn btn-dark w-100" id="translateButton" disabled>Translate</button>
+        </div>
+        
+        <div class="border bg-light text-muted form-control-sm" style="margin-top: 10px;">
+            <div class="form-control form-control-sm bg-light text-muted" style="margin-top: 10px;">
+                <p>Translated Text</p>
+                <textarea class="form-control form-control-sm" id="translatedText" rows="3" disabled></textarea>
+            </div>
+
+            <div class="form-control form-control-sm bg-light text-muted" style="margin-top: 10px;">
+                <p id="translatedSpeech">Translated Speech</p>
+                <audio class="w-100 form-control-sm" id="outputAudio" controls></audio>
+            </div>
+        </div>
+    </div>
+
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader"></div>
+    </div>
+
+    <footer class="bg-light text-center text-muted" style="font-size: 80%;">
+        <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.025);">
+            Tranlator Using Seamless M4T By Ramish Fateh
+        </div>
+    </footer>
+   
+    <script>
+        let mediaRecorder;
+        const chunks = [];
+        const fileInput = document.getElementById('fileInput');
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const translateButton = document.getElementById('translateButton');
+        const translatedText = document.getElementById('translatedText');
+        const translatedSpeech = document.getElementById('translatedSpeech');
+        const outputAudio = document.getElementById('outputAudio');
+        const selectFileRadio = document.getElementById('selectFile');
+        const recordAudioRadio = document.getElementById('recordAudio');
+        const targetLanguage = document.getElementById('targetLanguage');
+        file = null;
+
+        fileInput.addEventListener('change', () => {
+            translateButton.disabled = false;
+        });
+
+        selectFileRadio.addEventListener('change', () => {
+            fileInput.disabled = false;
+            recordButton.setAttribute("hidden", "hidden");
+            stopButton.setAttribute("hidden", "hidden");
+            fileInput.removeAttribute("hidden");
+            file = null;
+        });
+
+        recordAudioRadio.addEventListener('change', () => {
+            fileInput.disabled = true;
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+            recordButton.removeAttribute("hidden");
+            stopButton.removeAttribute("hidden");
+            fileInput.setAttribute("hidden", "hidden");
+            file = null;
+            fileInput.value = '';
+            translateButton.disabled = true;
+        });
+
+        recordButton.addEventListener('click', async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            file = null;
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'audio/wav' });
+                file = new File([blob], 'recorded_audio.wav');
+                fileInput.files = [file]; // Set the selected file to the recorded audio
+                translateButton.disabled = false;
+            };
+
+            mediaRecorder.start();
+            recordButton.disabled = true;
+            stopButton.disabled = false;
+        });
+
+        stopButton.addEventListener('click', () => {
+            mediaRecorder.stop();
+            stopButton.disabled = true;
+            translateButton.disabled = false;
+        });
+
+        translateButton.addEventListener('click', async () => {
+            try 
+            {
+                loaderContainer.style.display = 'flex';
+                const formData = new FormData();
+
+                console.log(fileInput.files[0])
+                console.log('recordedAudio', file != null ? file : '')
+                console.log('selectedAudio', fileInput.files[0] != null ? fileInput.files[0] : '')
+
+                formData.append('selectedAudio', fileInput.files[0] != null ? fileInput.files[0] : '');
+                formData.append('recordedAudio', file != null ? file : '');
+                formData.append('targetLanguage', targetLanguage.value);
+                // formData.append('targetLanguage2', targetLanguage2.value);
+                // formData.append('task', task.value);
+                // formData.append('sourceLanguage', sourceLanguage.value != null ? sourceLanguage.value : '');
+                // formData.append('inputText', inputText.value != null ? inputText.value : '');
+
+                const response = await fetch('/translate', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                console.log("data : " + data)
+
+                if(data != null)
+                {
+                    if (data.error) 
+                    {
+                        console.log(data.error)
+                        translatedText.textContent = 'Translation failed.';
+                        outputAudio.src = '';
+                    } 
+                    else 
+                    {
+                        console.log("no error")
+                        console.log(data.text)
+                        translatedText.textContent = data.text;
+                        outputAudio.src = data.audio_url;
+                    }
+                }
+
+                fileInput.value = '';
+                loaderContainer.style.display = 'none';
+                file = null;
+                translateButton.disabled = true;
+
+            } catch (error) {
+                console.error('Error:', error);
+                translatedText.textContent = 'Translation failed.';
+                outputAudio.src = '';
+                loaderContainer.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
