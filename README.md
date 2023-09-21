@@ -34,10 +34,11 @@ pip install Flask
 
 ## Clone My Repo
 ```
-https://github.com/drRamish/seamlessM4T.git
+git clone https://github.com/drRamish/seamlessM4T.git
 ```
 
 ## Move Files to Flask Project
+* Move all files to your virtual environment project folder
 
 ## Install the Dependencies
 ```
