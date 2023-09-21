@@ -15,6 +15,18 @@ But below mentioned steps can be followed to run on LINUX Systems Successfully.
 * Python for backend code
 * Flask for frontend code
 
+## Create a New Virtual Environment Project 
+```
+# New Virtual Environment
+python -m venv newProject
+
+# Change Directory
+cd newProject
+
+# Activate the Virtual Environment
+source ./bin/activate
+```
+
 ## Install Flask
 ```
 pip install Flask
