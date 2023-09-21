@@ -11,6 +11,30 @@ But below mentioned steps can be followed to run on LINUX Systems Successfully.
 
 
 ## Tools Used:
-VS Code for Coding
-Python for backend code
-Flask for frontend code
+* VS Code for Coding
+* Python for backend code
+* Flask for frontend code
+
+## Install Flask
+'''
+pip install Flask
+'''
+
+## Clone My Repo
+'''
+'''
+
+## Move Files to Flask Project
+
+## Install the Dependencies
+'''
+pip install -r requirements.txt
+'''
+
+## Run the Project
+'''
+python app.py
+'''
+
+
+
