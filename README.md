@@ -1,4 +1,4 @@
-# seamlessM4T Translator
+# seamlessM4T Speech to Speech Translator
 PGD Mid Term Project for Python Course 1
 
 I have used Seamless M4T Model for Speech to Speech Translator on Linux.
@@ -22,6 +22,7 @@ pip install Flask
 
 ## Clone My Repo
 '''
+https://github.com/drRamish/seamlessM4T.git
 '''
 
 ## Move Files to Flask Project
